@@ -1,5 +1,5 @@
 import { Component } from "react";
-import RedactionProp from "../RedactionProp/RedactionProp";
+import ContactFormInput from "../ContactFormInput/ContactFormInput";
 import styles from "./ContactForm.module.css";
 
 class ContactForm extends Component {
@@ -38,15 +38,11 @@ class ContactForm extends Component {
 
   onSaveContact = (ev) => {
     ev.preventDefault();
-    this.props.saveContact(this.state.contact);
-
+    const contact = { ...this.state.contact };
+    this.props.saveContact(contact);
     if (!this.state.contact.id) {
       this.setState({
         contact: this.props.createNewContact(),
-      });
-    } else {
-      this.setState({
-        contact: this.state.contact,
       });
     }
   };
@@ -61,36 +57,36 @@ class ContactForm extends Component {
     return (
       <>
         <form className={styles["redaction-contact-div"]}>
-          <RedactionProp
+          <ContactFormInput
             name="firstName"
             placeholder="First Name"
             value={this.state.contact.firstName}
             handleChange={this.handleChange}
-            onClearInput={this.clearSelectInput}
+            clearInput={this.clearSelectInput}
           />
 
-          <RedactionProp
+          <ContactFormInput
             name="lastName"
             placeholder="Last Name"
             value={this.state.contact.lastName}
             handleChange={this.handleChange}
-            onClearInput={this.clearSelectInput}
+            clearInput={this.clearSelectInput}
           />
 
-          <RedactionProp
+          <ContactFormInput
             name="email"
             placeholder="Email"
             value={this.state.contact.email}
             handleChange={this.handleChange}
-            onClearInput={this.clearSelectInput}
+            clearInput={this.clearSelectInput}
           />
 
-          <RedactionProp
+          <ContactFormInput
             name="phone"
             placeholder="Phone"
             value={this.state.contact.phone}
             handleChange={this.handleChange}
-            onClearInput={this.clearSelectInput}
+            clearInput={this.clearSelectInput}
           />
           <div className={styles["divSaveAndDelete"]}>
             <button onClick={this.onSaveContact}>Save</button>

@@ -7,7 +7,7 @@ import ContactForm from "./components/ContactForm/ContactForm";
 class App extends Component {
   state = {
     userContacts: [],
-    selectedContact: this.createNewContact(),
+    contact: this.createNewContact(),
   };
 
   componentDidMount() {
@@ -16,9 +16,7 @@ class App extends Component {
 
   getFromLocalStor() {
     const userData = JSON.parse(localStorage.getItem("userContacts"));
-    if (userData) {
-      this.setState({ userContacts: userData });
-    }else{this.setState({ userContacts: [] })}
+    this.setState({ userContacts: userData || [] });
   }
 
   saveToLocalStor = () => {
@@ -29,7 +27,7 @@ class App extends Component {
   };
 
   selectContact = (contact) => {
-    this.setState({ selectedContact: contact });
+    this.setState({ contact: contact });
   };
 
   createNewContact() {
@@ -43,7 +41,7 @@ class App extends Component {
   }
 
   addNewContact = () => {
-    this.setState({ selectedContact: this.createNewContact() });
+    this.setState({ contact: this.createNewContact() });
   };
 
   saveContact = (contact) => {
@@ -52,7 +50,7 @@ class App extends Component {
       this.setState(
         (prev) => ({
           userContacts: [...prev.userContacts, contact],
-          selectedContact: this.createNewContact(),
+          contact: this.createNewContact(),
         }),
         this.saveToLocalStor,
       );
@@ -72,10 +70,7 @@ class App extends Component {
     this.setState(
       (prev) => ({
         userContacts: prev.userContacts.filter((item) => item.id !== id),
-        selectedContact:
-          prev.selectedContact.id === id
-            ? this.createNewContact()
-            : prev.selectedContact,
+        contact: this.createNewContact(),
       }),
       this.saveToLocalStor,
     );
@@ -94,7 +89,7 @@ class App extends Component {
           />
           <ContactForm
             saveContact={this.saveContact}
-            contact={this.state.selectedContact}
+            contact={this.state.contact}
             deleteContact={this.deleteContact}
             createNewContact={this.createNewContact}
           />
