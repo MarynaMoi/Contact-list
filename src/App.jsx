@@ -1,86 +1,86 @@
-import { Component } from "react";
-import { nanoid } from "nanoid";
-import styles from "./App.module.css";
-import AllContactList from "./components/AllContact/AllContactList";
-import ContactForm from "./components/ContactForm/ContactForm";
+import { Component } from 'react'
+import { nanoid } from 'nanoid'
+import styles from './App.module.css'
+import AllContactList from './components/AllContact/AllContactList'
+import ContactForm from './components/ContactForm/ContactForm'
 
 class App extends Component {
   state = {
     userContacts: [],
-    contact: this.createNewContact(),
-  };
-
-  componentDidMount() {
-    this.getFromLocalStor();
+    contact: this.createNewContact()
   }
 
-  getFromLocalStor() {
-    const userData = JSON.parse(localStorage.getItem("userContacts"));
-    this.setState({ userContacts: userData || [] });
+  componentDidMount () {
+    this.getFromLocalStor()
+  }
+
+  getFromLocalStor () {
+    const userData = JSON.parse(localStorage.getItem('userContacts'))
+    this.setState({ userContacts: userData || [] })
   }
 
   saveToLocalStor = () => {
     localStorage.setItem(
-      "userContacts",
-      JSON.stringify(this.state.userContacts),
-    );
-  };
+      'userContacts',
+      JSON.stringify(this.state.userContacts)
+    )
+  }
 
-  selectContact = (contact) => {
-    this.setState({ contact: contact });
-  };
+  selectContact = contact => {
+    this.setState({ contact: contact })
+  }
 
-  createNewContact() {
+  createNewContact () {
     return {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      id: null,
-    };
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      id: null
+    }
   }
 
   addNewContact = () => {
-    this.setState({ contact: this.createNewContact() });
-  };
+    this.setState({ contact: this.createNewContact() })
+  }
 
-  saveContact = (contact) => {
+  saveContact = contact => {
     if (!contact.id) {
-      contact.id = nanoid();
+      contact.id = nanoid()
       this.setState(
-        (prev) => ({
+        prev => ({
           userContacts: [...prev.userContacts, contact],
-          contact: this.createNewContact(),
+          contact: this.createNewContact()
         }),
-        this.saveToLocalStor,
-      );
+        this.saveToLocalStor
+      )
     } else {
       this.setState(
-        (prev) => ({
-          userContacts: prev.userContacts.map((item) =>
-            item.id === contact.id ? contact : item,
-          ),
+        prev => ({
+          userContacts: prev.userContacts.map(item =>
+            item.id === contact.id ? contact : item
+          )
         }),
-        this.saveToLocalStor,
-      );
+        this.saveToLocalStor
+      )
     }
-  };
+  }
 
-  deleteContact = (id) => {
+  deleteContact = id => {
     this.setState(
-      (prev) => ({
-        userContacts: prev.userContacts.filter((item) => item.id !== id),
-        contact: this.createNewContact(),
+      prev => ({
+        userContacts: prev.userContacts.filter(item => item.id !== id),
+        contact: this.createNewContact()
       }),
-      this.saveToLocalStor,
-    );
-  };
+      this.saveToLocalStor
+    )
+  }
 
-  render() {
+  render () {
     return (
       <>
-        <div className={styles["title"]}>Contact list</div>
-        <div className={styles["list-and-redaction-div"]}>
+        <div className={styles['title']}>Contact list</div>
+        <div className={styles['list-and-redaction-div']}>
           <AllContactList
             userContacts={this.state.userContacts}
             selectContact={this.selectContact}
@@ -95,8 +95,8 @@ class App extends Component {
           />
         </div>
       </>
-    );
+    )
   }
 }
 
-export default App;
+export default App

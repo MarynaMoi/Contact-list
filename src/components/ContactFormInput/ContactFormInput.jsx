@@ -1,12 +1,12 @@
-import { Component } from "react";
-import styles from "./ContactFormInput.module.css";
+import { Component } from 'react'
+import styles from './ContactFormInput.module.css'
 
 class ContactFormInput extends Component {
-  onClearInput = (ev) => {
-    ev.stopPropagation();
-    this.props.clearInput(this.props.name);
-  };
-  render() {
+  onClearInput = ev => {
+    ev.stopPropagation()
+    this.props.clearInput(this.props.name)
+  }
+  render () {
     return (
       <div className={styles.inputWrapper}>
         <input
@@ -22,8 +22,8 @@ class ContactFormInput extends Component {
           </span>
         )}
       </div>
-    );
+    )
   }
 }
 
-export default ContactFormInput;
+export default ContactFormInput
