@@ -1,103 +1,93 @@
-import { Component } from 'react'
 import ContactFormInput from '../ContactFormInput/ContactFormInput'
 import styles from './ContactForm.module.css'
+import { useState, useEffect } from 'react'
 
-class ContactForm extends Component {
-  state = {
-    contact: this.props.contact
-  }
+function ContactForm ({
+  saveContact,
+  contactData,
+  deleteContact,
+  createNewContact
+}) {
+  const [contact, setContact] = useState(contactData)
 
-  static getDerivedStateFromProps (props, state) {
-    if (props.contact.id !== state.contact.id) {
-      return {
-        contact: props.contact
-      }
-    }
-    return null
-  }
+  useEffect(() => {
+    setContact(contactData)
+  }, [contactData])
 
-  handleChange = ev => {
+  const handleChange = ev => {
     const { name, value } = ev.target
 
-    this.setState(prev => ({
-      contact: {
-        ...prev.contact,
-        [name]: value
-      }
+    setContact(prev => ({
+      ...prev,
+      [name]: value
     }))
   }
 
-  clearSelectInput = fieldName => {
-    this.setState(prev => ({
-      contact: {
-        ...prev.contact,
-        [fieldName]: ''
-      }
+  const clearSelectInput = fieldName => {
+    setContact(prev => ({
+      ...prev,
+      [fieldName]: ''
     }))
   }
 
-  onSaveContact = ev => {
+  const onSaveContact = ev => {
     ev.preventDefault()
-    const contact = { ...this.state.contact }
-    this.props.saveContact(contact)
-    if (!this.state.contact.id) {
-      this.setState({
-        contact: this.props.createNewContact()
-      })
+    const newContact = { ...contact }
+    saveContact(newContact)
+    if (!contact.id) {
+      setContact(createNewContact())
     }
   }
 
-  onDeleteContact = ev => {
+  const onDeleteContact = ev => {
     ev.preventDefault()
 
-    this.props.deleteContact(this.state.contact.id)
+    deleteContact(contact.id)
   }
 
-  render () {
-    return (
-      <>
-        <form className={styles['redaction-contact-div']}>
-          <ContactFormInput
-            name='firstName'
-            placeholder='First Name'
-            value={this.state.contact.firstName}
-            handleChange={this.handleChange}
-            clearInput={this.clearSelectInput}
-          />
+  return (
+    <>
+      <form className={styles['redaction-contact-div']}>
+        <ContactFormInput
+          name='firstName'
+          placeholder='First Name'
+          value={contact.firstName}
+          handleChange={handleChange}
+          clearInput={clearSelectInput}
+        />
 
-          <ContactFormInput
-            name='lastName'
-            placeholder='Last Name'
-            value={this.state.contact.lastName}
-            handleChange={this.handleChange}
-            clearInput={this.clearSelectInput}
-          />
+        <ContactFormInput
+          name='lastName'
+          placeholder='Last Name'
+          value={contact.lastName}
+          handleChange={handleChange}
+          clearInput={clearSelectInput}
+        />
 
-          <ContactFormInput
-            name='email'
-            placeholder='Email'
-            value={this.state.contact.email}
-            handleChange={this.handleChange}
-            clearInput={this.clearSelectInput}
-          />
+        <ContactFormInput
+          name='email'
+          placeholder='Email'
+          value={contact.email}
+          handleChange={handleChange}
+          clearInput={clearSelectInput}
+        />
 
-          <ContactFormInput
-            name='phone'
-            placeholder='Phone'
-            value={this.state.contact.phone}
-            handleChange={this.handleChange}
-            clearInput={this.clearSelectInput}
-          />
-          <div className={styles['divSaveAndDelete']}>
-            <button onClick={this.onSaveContact}>Save</button>
-            {this.props.contact.id !== null && (
-              <button onClick={this.onDeleteContact}>Delete</button>
-            )}
-          </div>
-        </form>
-      </>
-    )
-  }
+        <ContactFormInput
+          name='phone'
+          placeholder='Phone'
+          value={contact.phone}
+          handleChange={handleChange}
+          clearInput={clearSelectInput}
+        />
+        <div className={styles['divSaveAndDelete']}>
+          <button onClick={onSaveContact}>Save</button>
+          {contact.id !== null && (
+            <button onClick={onDeleteContact}>Delete</button>
+          )}
+        </div>
+      </form>
+    </>
+  )
 }
 
 export default ContactForm
