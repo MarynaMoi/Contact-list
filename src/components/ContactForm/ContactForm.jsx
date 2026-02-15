@@ -1,49 +1,49 @@
-import ContactFormInput from '../ContactFormInput/ContactFormInput'
-import styles from './ContactForm.module.css'
-import { useState, useEffect } from 'react'
+import ContactFormInput from '../ContactFormInput/ContactFormInput';
+import styles from './ContactForm.module.css';
+import { useState, useEffect } from 'react';
 
 function ContactForm ({
   saveContact,
   contactData,
   deleteContact,
-  createNewContact
+  createNewContact,
 }) {
-  const [contact, setContact] = useState(contactData)
+  const [contact, setContact] = useState(contactData);
 
   useEffect(() => {
-    setContact(contactData)
-  }, [contactData])
+    setContact(contactData);
+  }, [contactData]);
 
   const handleChange = ev => {
-    const { name, value } = ev.target
+    const { name, value } = ev.target;
 
     setContact(prev => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const clearSelectInput = fieldName => {
     setContact(prev => ({
       ...prev,
-      [fieldName]: ''
-    }))
-  }
+      [fieldName]: '',
+    }));
+  };
 
   const onSaveContact = ev => {
-    ev.preventDefault()
-    const newContact = { ...contact }
-    saveContact(newContact)
+    ev.preventDefault();
+    const newContact = { ...contact };
+    saveContact(newContact);
     if (!contact.id) {
-      setContact(createNewContact())
+      setContact(createNewContact());
     }
-  }
+  };
 
   const onDeleteContact = ev => {
-    ev.preventDefault()
+    ev.preventDefault();
 
-    deleteContact(contact.id)
-  }
+    deleteContact(contact.id);
+  };
 
   return (
     <>
@@ -87,7 +87,7 @@ function ContactForm ({
         </div>
       </form>
     </>
-  )
+  );
 }
 
-export default ContactForm
+export default ContactForm;

@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types'
-import styles from './AllContactList.module.css'
-import UserContact from '../UserContact/UserContact'
+import PropTypes from 'prop-types';
+import styles from './AllContactList.module.css';
+import UserContact from '../UserContact/UserContact';
 
 function AllContactList ({
   userContacts,
   selectContact,
   addNewContact,
-  deleteContact
+  deleteContact,
 }) {
   return (
     <div className={styles['all-contact-div']}>
@@ -22,18 +22,16 @@ function AllContactList ({
         New
       </button>
     </div>
-  )
+  );
 }
-
-
 
 AllContactList.propTypes = {
   userContacts: PropTypes.array,
   selectContact: PropTypes.func,
   addNewContact: PropTypes.func.isRequired,
-  deleteContact: PropTypes.func
-}
+  deleteContact: PropTypes.func,
+};
 AllContactList.defaultProps = {
-  userContacts: []
-}
-export default AllContactList
+  userContacts: [],
+};
+export default AllContactList;

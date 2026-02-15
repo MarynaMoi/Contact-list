@@ -1,12 +1,16 @@
+import styles from './ContactFormInput.module.css';
 
-import styles from './ContactFormInput.module.css'
-
-
-function ContactFormInput ({handleChange, clearInput, name, placeholder, value}) {
+function ContactFormInput ({
+  handleChange,
+  clearInput,
+  name,
+  placeholder,
+  value,
+}) {
   const onClearInput = ev => {
-    ev.stopPropagation()
-    clearInput(name)
-  }
+    ev.stopPropagation();
+    clearInput(name);
+  };
 
   return (
     <div className={styles.inputWrapper}>
@@ -23,7 +27,7 @@ function ContactFormInput ({handleChange, clearInput, name, placeholder, value})
         </span>
       )}
     </div>
-  )
+  );
 }
 
-export default ContactFormInput
+export default ContactFormInput;
