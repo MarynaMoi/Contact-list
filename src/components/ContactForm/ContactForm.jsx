@@ -1,47 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from 'nanoid';
 import ContactFormInput from '../ContactFormInput/ContactFormInput';
+import {
+  addContact,
+  addNewContact,
+  updateContact,
+} from '../../store/actions/contactActions';
+import api from '../../api/contact-service';
 import styles from './ContactForm.module.css';
 
-function ContactForm ({
-  saveContact,
-  contactData,
-  deleteContact,
-  createNewContact,
-}) {
-  const [contact, setContact] = useState(contactData);
-
-  useEffect(() => {
-    setContact(contactData);
-  }, [contactData]);
-
-  const handleChange = ev => {
-    const { name, value } = ev.target;
-
-    setContact(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const clearSelectInput = fieldName => {
-    setContact(prev => ({
-      ...prev,
-      [fieldName]: '',
-    }));
-  };
+function ContactForm ({ deleteContact }) {
+  const dispatch = useDispatch();
+  const contact = useSelector(state => state.contact);
 
   const onSaveContact = ev => {
     ev.preventDefault();
-    const newContact = { ...contact };
-    saveContact(newContact);
+
     if (!contact.id) {
-      setContact(createNewContact());
+      const newContact = { ...contact, id: nanoid() };
+
+      api
+        .post('/', newContact)
+        .then(response => {
+          dispatch(addContact(response.data));
+          dispatch(addNewContact());
+        })
+        .catch(error => {
+          console.error('Error creating contact:', error);
+        });
+    } else {
+      api
+        .put(`/${contact.id}`, contact)
+        .then(response => {
+          dispatch(updateContact(response.data));
+        })
+        .catch(error => {
+          console.error('Error updating contact:', error);
+        });
     }
   };
 
   const onDeleteContact = ev => {
     ev.preventDefault();
-
     deleteContact(contact.id);
   };
 
@@ -52,32 +52,24 @@ function ContactForm ({
           name='firstName'
           placeholder='First Name'
           value={contact.firstName}
-          handleChange={handleChange}
-          clearInput={clearSelectInput}
         />
 
         <ContactFormInput
           name='lastName'
           placeholder='Last Name'
           value={contact.lastName}
-          handleChange={handleChange}
-          clearInput={clearSelectInput}
         />
 
         <ContactFormInput
           name='email'
           placeholder='Email'
           value={contact.email}
-          handleChange={handleChange}
-          clearInput={clearSelectInput}
         />
 
         <ContactFormInput
           name='phone'
           placeholder='Phone'
           value={contact.phone}
-          handleChange={handleChange}
-          clearInput={clearSelectInput}
         />
         <div className={styles['divSaveAndDelete']}>
           <button onClick={onSaveContact}>Save</button>

@@ -1,37 +1,27 @@
-import PropTypes from 'prop-types';
-import styles from './AllContactList.module.css';
-import UserContact from '../UserContact/UserContact';
+import { useSelector, useDispatch } from 'react-redux';
 
-function AllContactList ({
-  userContacts,
-  selectContact,
-  addNewContact,
-  deleteContact,
-}) {
+import UserContact from '../UserContact/UserContact';
+import styles from './AllContactList.module.css';
+import { addNewContact } from './../../store/actions/contactActions';
+
+function AllContactList ({onDeleteContact}) {
+  const dispatch = useDispatch();
+  const userContacts = useSelector(state => state.contactsUser);
+
   return (
     <div className={styles['all-contact-div']}>
       {userContacts.map(item => (
-        <UserContact
-          key={item.id}
-          contact={item}
-          selectContact={selectContact}
-          deleteContact={deleteContact}
-        />
+        <UserContact key={item.id} contact={item} deleteContact={onDeleteContact} />
       ))}
-      <button className={styles['add-contact-btn']} onClick={addNewContact}>
+
+      <button
+        className={styles['add-contact-btn']}
+        onClick={() => dispatch(addNewContact())}
+      >
         New
       </button>
     </div>
   );
 }
 
-AllContactList.propTypes = {
-  userContacts: PropTypes.array,
-  selectContact: PropTypes.func,
-  addNewContact: PropTypes.func.isRequired,
-  deleteContact: PropTypes.func,
-};
-AllContactList.defaultProps = {
-  userContacts: [],
-};
 export default AllContactList;

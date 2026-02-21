@@ -1,12 +1,18 @@
+import { useDispatch } from 'react-redux';
+import {  selectContact} from './../../store/actions/contactActions';
 import styles from './UserContact.module.css';
-function UserContact ({ selectContact, contact, deleteContact }) {
+
+function UserContact ({ contact , deleteContact}) {
+  const dispatch = useDispatch();
+
   const onDeleteContact = ev => {
     ev.stopPropagation();
     deleteContact(contact.id);
   };
+
   const onSelectContact = ev => {
     ev.stopPropagation();
-    selectContact(contact);
+    dispatch(selectContact(contact));
   };
 
   return (
